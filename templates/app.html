@@ -64,10 +64,39 @@
         */
         let bootstrapTheme=localStorage.getItem("theme");function colormode_onchange(e){}function getPreferredTheme(){return bootstrapTheme||(window.matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light")}function detectSystemTheme(){return window.matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light"}function filterTheme(e){return"auto"==e?detectSystemTheme():e}function setTheme(e){document.documentElement.setAttribute("data-bs-theme",filterTheme(e))}function showActiveTheme(e){$("[data-bs-theme-value]").removeClass("bg-primary text-white active"),$(`[data-bs-theme-value="${e}"]`).addClass("bg-primary text-white active")}$(document).on("click","[data-bs-theme-value]",function(e){bootstrapTheme=$(this).attr("data-bs-theme-value"),localStorage.setItem("theme",bootstrapTheme),setTheme(bootstrapTheme),showActiveTheme(bootstrapTheme),colormode_onchange(bootstrapTheme)}),document.addEventListener("DOMContentLoaded",function(e){setTheme(bootstrapTheme=getPreferredTheme()),showActiveTheme(bootstrapTheme)});
     </script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function (event) {
+            $.get("/buscar", function (respuesta) {
+                $("#tbodyProductos").html("")
+
+                for (let x in respuesta) {
+                    let registro = respuesta[x]
+                    let nombre = registro["Nombre_Producto"]
+                    let precio = registro["Precio"]
+                    $("#tbodyProductos").append(`<tr>
+                      <td>${x+1}</td>
+                      <td>${nombre}</td>
+                      <td>${precio}</td>
+                    </tr>`)
+                }
+            })
+        })
+    </script>
 </head>
 <body>
     <div class="container">
-      <h1>Hola Mundo!</h1>
+      <div class="table-responsive">
+          <table>
+              <thead>
+                  <tr>
+                      <th>Id</th>
+                      <th>Nombre</th>
+                      <th>Precio</th>
+                  </tr>
+              </thead>
+              <tbody id="tbodyProductos"></tbody>
+          </table>
+      </div>
     </div>
 
     <div class="app-float-button bg-body" style="z-index: 2; position: fixed; bottom: 5px; left: 5px; cursor: pointer;">

@@ -1,3 +1,2 @@
 Flask
 Gunicorn
-mysql-connector-python
